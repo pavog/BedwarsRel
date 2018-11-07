@@ -20,10 +20,12 @@ jobs:
             export SHORT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7)
             if [ "${CIRCLE_BRANCH}" == "master" ]
             then
-              mvn deploy -fae -P ci-release,deploy-snapshot,attach-javadocs,attach-sources --settings settings.xml
+              # mvn deploy -fae -P ci-release,deploy-snapshot,attach-javadocs,attach-sources --settings settings.xml
+              mvn clean install -fae -P ci-snapshot,attach-javadocs,attach-sources
             elif [ "${CIRCLE_BRANCH}" == "develop" ]
             then
-              mvn deploy -fae -P ci-snapshot,deploy-snapshot,attach-javadocs,attach-sources --settings settings.xml
+              # mvn deploy -fae -P ci-snapshot,deploy-snapshot,attach-javadocs,attach-sources --settings settings.xml
+              mvn clean install -fae -P ci-snapshot,attach-javadocs,attach-sources
             else
               mvn clean install -fae -P ci-snapshot,attach-javadocs,attach-sources
             fi
