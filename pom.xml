@@ -47,6 +47,8 @@
     <module>v1_11_r1</module>
     <module>v1_12_r1</module>
     <module>v1_13_r1</module>
+    <module>v1_13_r2</module>
+    <module>v1_13_r3</module>
     <module>common</module>
     <module>plugin</module>
   </modules>
