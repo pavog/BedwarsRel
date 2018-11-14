@@ -31,6 +31,9 @@ jobs:
             fi
             mkdir -p plugin/target/artifacts/
             cp plugin/target/BedwarsRel-*.jar plugin/target/artifacts/.
+      - run:
+          name: "Generating test reports"
+          command: 'mvn clean test jacoco:report coveralls:report'
       - type: artifacts-store
         path: plugin/target/artifacts
         destination: artifacts

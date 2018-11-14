@@ -97,7 +97,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -130,6 +132,27 @@ public class BedwarsRel extends JavaPlugin {
   private BukkitTask timeTask = null;
   private BukkitTask updateChecker = null;
   private String version = null;
+
+  /**
+   * Used for MockBukkit
+   */
+  public BedwarsRel()
+  {
+    super();
+  }
+  /**
+   * Used for MockBukkit
+   *
+   * @param loader
+   * @param description
+   * @param dataFolder
+   * @param file
+   */
+  protected BedwarsRel(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
+  {
+    super(loader, description, dataFolder, file);
+  }
+
 
   public static String _l(CommandSender commandSender, String key, String singularValue,
       Map<String, String> params) {
