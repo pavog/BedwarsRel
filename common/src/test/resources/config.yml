@@ -25,7 +25,7 @@ chat-prefix: "&7[&bBedWars&7]&f"
 # to store statistics about the bedwars plugin. This is really
 # helpful for the developers of this plugin. You can
 # disable it anyway, that won't be a disadvantage
-plugin-metrics: true
+plugin-metrics: false
 
 # Send Error Data
 # type: boolean
@@ -634,30 +634,30 @@ resource:
     item:
     - type: CLAY_BRICK
       amount: 1
-      meta:
-        ==: ItemMeta
-        meta-type: UNSPECIFIC
-        display-name: "§4Bronze"
+#      meta:
+#        ==: ItemMeta
+#        meta-type: UNSPECIFIC
+#        display-name: "§4Bronze"
     spawn-interval: 1000
     spread: 1.0
   iron:
     item:
     - type: IRON_INGOT
       amount: 1
-      meta:
-        ==: ItemMeta
-        meta-type: UNSPECIFIC
-        display-name: "§7Iron"
+#      meta:
+#        ==: ItemMeta
+#        meta-type: UNSPECIFIC
+#        display-name: "§7Iron"
     spawn-interval: 10000
     spread: 1.0
   gold:
     item:
     - type: GOLD_INGOT
       amount: 1
-      meta:
-        ==: ItemMeta
-        meta-type: UNSPECIFIC
-        display-name: "§6Gold"
+#      meta:
+#        ==: ItemMeta
+#        meta-type: UNSPECIFIC
+#        display-name: "§6Gold"
     spawn-interval: 20000
     spread: 1.0
 
@@ -848,60 +848,6 @@ specials:
     # List of effects the player gets after stepping on a trap
     effects:
 
-    # Now the custom PotionEffect
-    # It is a list of effects
-    - ==: PotionEffect
-      
-      # Potion id
-      # type: int
-      # The id 15 means the PotionEffect Blindness
-      # You can find a list of possible effect ids you can use on http://minecraft-helpandinfo.weebly.com/potion-effects-ids.html
-      effect: 15
-      
-      
-      # Effect duration in ticks (20 ticks = 1 second)
-      # type: int
-      # The duration the trapeffect will have effects on the player in ticks
-      # 100 ticks is default (5 seconds)
-      duration: 100
-    
-      # Effect amplifier
-      # type: int
-      # The higher the value, the heavier the effect.
-      amplifier: 2
-      
-      # Effect ambient
-      # type: boolean
-      # Makes potion effect produce more, translucent, particles.
-      ambient: true
-      
-      # Effect has particles
-      # type: boolean
-      # Set to true, if trap effect should generate particles around the player
-      has-particles: true
-    
-    # Two more examples
-    # Feel free to customize and add more effects
-    - ==: PotionEffect
-      
-      # PotionEffect Weakness
-      effect: 18
-      
-      duration: 100
-      amplifier: 2
-      ambient: true
-      has-particles: true
-      
-    - ==: PotionEffect
-    
-      # PotionEffect Slowness
-      effect: 2
-       
-      duration: 100
-      amplifier: 2
-      ambient: true
-      has-particles: true
-  
   # TNT-Creature settings
   tntsheep:
     # TNT fuse time

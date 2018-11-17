@@ -122,6 +122,7 @@ public class MerchantCategory {
         ItemStack reward = null;
 
         try {
+          // TODO Fix for 1.13
           reward = ItemStack.deserialize(offerSection.get("reward").get(0));
         } catch (Exception e) {
           // CATCH EXCEPTION
