@@ -14,10 +14,9 @@
   <dependencies>
     <dependency>
       <groupId>com.gmail.filoghost.holographicdisplays</groupId>
-      <artifactId>api</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/../lib/HolographicDisplaysAPI_v2.1.7.jar</systemPath>
+      <artifactId>holographicdisplays-api</artifactId>
+      <version>2.3.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.github.pavog</groupId>
