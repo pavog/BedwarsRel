@@ -21,13 +21,13 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]
             then
               # mvn deploy -fae -P ci-release,deploy-snapshot,attach-javadocs,attach-sources --settings settings.xml
-              mvn clean install -fae -P ci-snapshot,attach-javadocs,attach-sources
+              mvn clean install -U -fae -P ci-snapshot,attach-javadocs,attach-sources
             elif [ "${CIRCLE_BRANCH}" == "develop" ]
             then
               # mvn deploy -fae -P ci-snapshot,deploy-snapshot,attach-javadocs,attach-sources --settings settings.xml
-              mvn clean install -fae -P ci-snapshot,attach-javadocs,attach-sources
+              mvn clean install -U -fae -P ci-snapshot,attach-javadocs,attach-sources
             else
-              mvn clean install -fae -P ci-snapshot,attach-javadocs,attach-sources
+              mvn clean install -U -fae -P ci-snapshot,attach-javadocs,attach-sources
             fi
             mkdir -p plugin/target/artifacts/
             cp plugin/target/BedwarsRel-*.jar plugin/target/artifacts/.
