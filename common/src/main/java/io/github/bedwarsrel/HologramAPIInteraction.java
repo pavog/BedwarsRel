@@ -1,8 +1,5 @@
 package io.github.bedwarsrel;
 
-import de.inventivegames.hologram.Hologram;
-import de.inventivegames.hologram.HologramAPI;
-import de.inventivegames.hologram.view.ViewHandler;
 import io.github.bedwarsrel.statistics.PlayerStatistic;
 import io.github.bedwarsrel.utils.ChatWriter;
 import io.github.bedwarsrel.utils.Utils;
@@ -18,6 +15,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.inventivetalent.hologramapi.Hologram;
+import org.inventivetalent.hologramapi.HologramAPI;
+import org.inventivetalent.hologramapi.view.ViewHandler;
 
 public class HologramAPIInteraction implements IHologramInteraction {
 
