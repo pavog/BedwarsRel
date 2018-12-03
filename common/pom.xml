@@ -20,9 +20,9 @@
       <systemPath>${pom.basedir}/../lib/HolographicDisplaysAPI_v2.1.7.jar</systemPath>
     </dependency>
     <dependency>
-      <groupId>org.inventivetalent</groupId>
-      <artifactId>hologramapi</artifactId>
-      <version>1.6.0</version>
+      <groupId>com.github.pavog</groupId>
+      <artifactId>HologramAPI</artifactId>
+      <version>master</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
