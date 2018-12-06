@@ -460,12 +460,7 @@ public class BedwarsRel extends JavaPlugin {
   public String getMissingHoloDependency() {
     if (!BedwarsRel.getInstance().isHologramsEnabled()) {
       String missingHoloDependency = null;
-      if (this.getServer().getPluginManager().isPluginEnabled("HologramAPI")
-          || this.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-        if (this.getServer().getPluginManager().isPluginEnabled("HologramAPI")) {
-          missingHoloDependency = "PacketListenerApi";
-          return missingHoloDependency;
-        }
+      if (this.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
         if (this.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
           missingHoloDependency = "ProtocolLib";
           return missingHoloDependency;
@@ -573,9 +568,7 @@ public class BedwarsRel extends JavaPlugin {
   }
 
   public boolean isHologramsEnabled() {
-    return (this.getServer().getPluginManager().isPluginEnabled("HologramAPI")
-        && this.getServer().getPluginManager().isPluginEnabled("PacketListenerApi"))
-        || (this.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")
+    return (this.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")
         && this.getServer().getPluginManager().isPluginEnabled("ProtocolLib"));
   }
 
@@ -807,9 +800,7 @@ public class BedwarsRel extends JavaPlugin {
 
     // holograms
     if (this.isHologramsEnabled()) {
-      if (this.getServer().getPluginManager().isPluginEnabled("HologramAPI")) {
-        this.holographicInteraction = new HologramAPIInteraction();
-      } else if (this.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+      if (this.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
         this.holographicInteraction = new HolographicDisplaysInteraction();
       }
       this.holographicInteraction.loadHolograms();

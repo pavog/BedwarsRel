@@ -19,12 +19,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.pavog</groupId>
-      <artifactId>HologramAPI</artifactId>
-      <version>master</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>com.bugsnag</groupId>
       <artifactId>bugsnag</artifactId>
       <version>3.4.1</version>

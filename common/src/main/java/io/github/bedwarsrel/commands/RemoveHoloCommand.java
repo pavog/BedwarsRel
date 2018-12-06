@@ -30,29 +30,6 @@ public class RemoveHoloCommand extends BaseCommand implements ICommand {
               .pluginMessage(
                   ChatColor.GREEN + BedwarsRel._l(player, "commands.removeholo.explain")));
 
-    } else if (BedwarsRel.getInstance().getHolographicInteractor().getType()
-        .equalsIgnoreCase("HologramAPI")) {
-
-      for (Location location : BedwarsRel.getInstance().getHolographicInteractor()
-          .getHologramLocations()) {
-        if (player.getEyeLocation().getBlockX() == location.getBlockX()
-            && player.getEyeLocation().getBlockY() == location.getBlockY()
-            && player.getEyeLocation().getBlockZ() == location.getBlockZ()) {
-          BedwarsRel.getInstance().getHolographicInteractor().onHologramTouch(player, location);
-        }
-      }
-      BedwarsRel.getInstance().getServer().getScheduler().runTaskLater(BedwarsRel.getInstance(),
-          new Runnable() {
-
-            @Override
-            public void run() {
-              if (player.hasMetadata("bw-remove-holo")) {
-                player.removeMetadata("bw-remove-holo", BedwarsRel.getInstance());
-              }
-            }
-
-          }, 10L * 20L);
-
     }
     return true;
   }
