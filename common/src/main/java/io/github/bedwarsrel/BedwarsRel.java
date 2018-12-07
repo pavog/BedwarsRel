@@ -809,7 +809,7 @@ public class BedwarsRel extends JavaPlugin {
 
   private void registerBugsnag() {
     try {
-      this.bugsnag = new Bugsnag("c23593c1e2f40fc0da36564af1bd00c6");
+      this.bugsnag = new Bugsnag("c7f526fa0a70ee8a117d5182308eedb5");
       this.bugsnag.setAppVersion(SupportData.getPluginVersion());
       this.bugsnag.setProjectPackages("io.github.bedwarsrel");
       this.bugsnag.setReleaseStage(SupportData.getPluginVersionType());
