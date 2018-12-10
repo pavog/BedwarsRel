@@ -21,7 +21,8 @@ public class TNTSheepRegister implements ITNTSheepRegister {
 
   @Override
   public void registerEntities(int entityId) {
-    CustomEntityRegistry.addCustomEntity(entityId, "TNTSheep", TNTSheep.class);
+    // TODO Register TNT Sheep
+    // CustomEntityRegistry.addCustomEntity(entityId, "TNTSheep", TNTSheep.class);
   }
 
   @Override
@@ -29,6 +30,8 @@ public class TNTSheepRegister implements ITNTSheepRegister {
       final io.github.bedwarsrel.shop.Specials.TNTSheep specialItem,
       final Location location, final Player owner, Player target, final DyeColor color) {
     final TNTSheep sheep = new TNTSheep(location, target);
+    // TODO Spawn TNT Sheep
+    /*
 
     ((CraftWorld) location.getWorld()).getHandle().addEntity(sheep, SpawnReason.CUSTOM);
     sheep.setPosition(location.getX(), location.getY(), location.getZ());
@@ -62,6 +65,7 @@ public class TNTSheepRegister implements ITNTSheepRegister {
         specialItem.updateTNT();
       }
     }.runTaskLater(BedwarsRel.getInstance(), 5L);
+    */
 
     return sheep;
   }
