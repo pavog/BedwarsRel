@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -62,9 +64,9 @@ public class MerchantCategory {
       int order = 0;
 
       if (!Utils.isNumber(item)) {
-        catItem = Material.getMaterial(section.getString(cat + ".item"));
+        catItem = XMaterial.fromString(section.getString(cat + ".item")).parseMaterial();
       } else {
-        catItem = Material.getMaterial(section.getInt(cat + ".item"));
+        catItem = XMaterial.fromId(section.getInt(cat + ".item")).parseMaterial();
       }
 
       if (section.contains(cat + ".lore")) {
@@ -178,14 +180,15 @@ public class MerchantCategory {
       inv.addItem(is);
     }
 
-    ItemStack snow = new ItemStack(Material.SNOW_BALL, 1);
-    ItemMeta snowMeta = snow.getItemMeta();
+    ItemStack snowball = XMaterial.SNOWBALL.parseItem();
+    snowball.setAmount(1);
+    ItemMeta snowMeta = snowball.getItemMeta();
 
     snowMeta.setDisplayName(BedwarsRel._l(p, "ingame.shop.newshop"));
     snowMeta.setLore(new ArrayList<String>());
-    snow.setItemMeta(snowMeta);
+    snowball.setItemMeta(snowMeta);
 
-    inv.setItem(size - 5, snow);
+    inv.setItem(size - 5, snowball);
     p.openInventory(inv);
   }
 

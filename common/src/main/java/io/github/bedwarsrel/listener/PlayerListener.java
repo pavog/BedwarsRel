@@ -9,6 +9,7 @@ import io.github.bedwarsrel.game.GameState;
 import io.github.bedwarsrel.game.Team;
 import io.github.bedwarsrel.shop.NewItemShop;
 import io.github.bedwarsrel.utils.ChatWriter;
+import io.github.bedwarsrel.utils.XMaterial;
 import io.github.bedwarsrel.villager.MerchantCategory;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -80,24 +81,20 @@ public class PlayerListener extends BaseListener {
   private void inGameInteractEntity(PlayerInteractEntityEvent iee, Game game, Player player) {
 
     if (BedwarsRel.getInstance().getCurrentVersion().startsWith("v1_8")) {
-      if (iee.getPlayer().getItemInHand().getType().equals(Material.MONSTER_EGG)
-          || iee.getPlayer().getItemInHand().getType().equals(Material.MONSTER_EGGS)
-          || iee.getPlayer().getItemInHand().getType().equals(Material.DRAGON_EGG)) {
+      XMaterial xMaterial = XMaterial.fromMaterial(iee.getPlayer().getItemInHand().getType());
+      if (iee.getPlayer().getItemInHand().getType().equals(Material.DRAGON_EGG)
+          || (xMaterial != null && xMaterial.getMaterialName().equalsIgnoreCase("MONSTER_EGG"))) {
         iee.setCancelled(true);
         return;
       }
     } else {
-      if (iee.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.MONSTER_EGG)
-          || iee.getPlayer().getInventory().getItemInMainHand().getType()
-          .equals(Material.MONSTER_EGGS)
-          || iee.getPlayer().getInventory().getItemInMainHand().getType()
+      XMaterial xMaterialInMainHand = XMaterial.fromMaterial(iee.getPlayer().getInventory().getItemInMainHand().getType());
+      XMaterial xMaterialInOffHand = XMaterial.fromMaterial(iee.getPlayer().getInventory().getItemInOffHand().getType());
+      if (iee.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.DRAGON_EGG)
+          || iee.getPlayer().getInventory().getItemInOffHand().getType()
           .equals(Material.DRAGON_EGG)
-          || iee.getPlayer().getInventory().getItemInOffHand().getType()
-          .equals(Material.MONSTER_EGG)
-          || iee.getPlayer().getInventory().getItemInOffHand().getType()
-          .equals(Material.MONSTER_EGGS)
-          || iee.getPlayer().getInventory().getItemInOffHand().getType()
-          .equals(Material.DRAGON_EGG)) {
+          || (xMaterialInMainHand != null && xMaterialInMainHand.getMaterialName().equalsIgnoreCase("MONSTER_EGG"))
+          || (xMaterialInOffHand != null && xMaterialInOffHand.getMaterialName().equalsIgnoreCase("MONSTER_EGG"))) {
         iee.setCancelled(true);
         return;
       }
@@ -550,7 +547,8 @@ public class PlayerListener extends BaseListener {
 
         if (ice.getInventory().getName().equals(BedwarsRel._l(player, "ingame.spectator"))) {
           ice.setCancelled(true);
-          if (!clickedStack.getType().equals(Material.SKULL_ITEM)) {
+          // TODO Check if skull item works
+          if (!clickedStack.getType().equals(XMaterial.SKELETON_SKULL.parseMaterial())) {
             return;
           }
 
@@ -590,7 +588,7 @@ public class PlayerListener extends BaseListener {
 
     if (game.getPlayerSettings(player).useOldShop()) {
       try {
-        if (clickedStack.getType() == Material.SNOW_BALL) {
+        if (clickedStack.getType().equals(XMaterial.SNOWBALL.parseMaterial())) {
           game.getPlayerSettings(player).setUseOldShop(false);
 
           // open new shop
@@ -722,7 +720,7 @@ public class PlayerListener extends BaseListener {
       return;
     }
 
-    if (clickedStack.getType() != Material.WOOL) {
+    if (XMaterial.fromItemStack(clickedStack).getMaterialName().equalsIgnoreCase("WOOL")) {
       ice.setCancelled(true);
       return;
     }
@@ -845,8 +843,8 @@ public class PlayerListener extends BaseListener {
 
     if (g.getState() == GameState.RUNNING) {
       if (pie.getAction() == Action.PHYSICAL && clickedBlock != null
-          && (clickedBlock.getType() == Material.WHEAT
-          || clickedBlock.getType() == Material.SOIL)) {
+              && (clickedBlock.getType().equals(XMaterial.WHEAT.parseMaterial()))
+              || clickedBlock.getType().equals(XMaterial.FARMLAND.parseMaterial())) {
         pie.setCancelled(true);
         return;
       }
@@ -935,8 +933,8 @@ public class PlayerListener extends BaseListener {
       }
 
       if (pie.getAction() == Action.PHYSICAL) {
-        if (clickedBlock != null && (clickedBlock.getType() == Material.WHEAT
-            || clickedBlock.getType() == Material.SOIL)) {
+        if (clickedBlock != null && clickedBlock.getType() != null && (clickedBlock.getType().equals(XMaterial.WHEAT.parseMaterial()))
+                || clickedBlock.getType().equals(XMaterial.FARMLAND.parseMaterial())) {
           pie.setCancelled(true);
           return;
         }
@@ -947,8 +945,9 @@ public class PlayerListener extends BaseListener {
         return;
       }
 
+      // TODO Move away from legacy materials and use XMaterial for this
       switch (interactingMaterial) {
-        case BED:
+        case LEGACY_BED_BLOCK:
           pie.setCancelled(true);
           if (!g.isAutobalanceEnabled()) {
             g.getPlayerStorage(player).openTeamSelection(g);

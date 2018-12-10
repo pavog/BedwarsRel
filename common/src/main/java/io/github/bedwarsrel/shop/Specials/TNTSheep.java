@@ -7,6 +7,8 @@ import io.github.bedwarsrel.game.GameState;
 import io.github.bedwarsrel.game.Team;
 import io.github.bedwarsrel.utils.ChatWriter;
 import java.util.ArrayList;
+
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -71,7 +73,7 @@ public class TNTSheep extends SpecialItem {
 
   @Override
   public Material getItemMaterial() {
-    return Material.MONSTER_EGG;
+    return XMaterial.SHEEP_SPAWN_EGG.parseMaterial();
   }
 
   public Player getPlayer() {

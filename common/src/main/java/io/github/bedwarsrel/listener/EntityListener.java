@@ -11,6 +11,8 @@ import io.github.bedwarsrel.utils.Utils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -92,8 +94,10 @@ public class EntityListener extends BaseListener {
       return;
     }
 
-    if (event.getBlock().getType() != Material.SOIL
-        && event.getBlock().getType() != Material.WHEAT) {
+
+
+    if (event.getBlock().getType().equals(XMaterial.FARMLAND.parseMaterial())
+        && event.getBlock().getType().equals(XMaterial.WHEAT.parseMaterial())) {
       return;
     }
 
@@ -186,7 +190,7 @@ public class EntityListener extends BaseListener {
       }
 
       if ((!tntDestroyEnabled && !tntDestroyBeds) || (!tntDestroyEnabled && tntDestroyBeds
-          && exploding.getType() != Material.BED_BLOCK && exploding.getType() != Material.BED)) {
+          && !Utils.isBedMaterial(exploding.getType()))) {
         if (!game.getRegion().isPlacedBlock(exploding)) {
           if (BedwarsRel.getInstance().isBreakableType(exploding.getType())) {
             game.getRegion().addBreakedBlock(exploding);

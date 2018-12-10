@@ -16,7 +16,8 @@ public enum TeamColor {
   DARK_GREEN(Color.fromRGB(0, 170, 0), ChatColor.DARK_GREEN, DyeColor.GREEN),
   DARK_RED(Color.fromRGB(170, 0, 0), ChatColor.DARK_RED, DyeColor.BROWN),
   DARK_PURPLE(Color.fromRGB(170, 0, 170), ChatColor.DARK_PURPLE, DyeColor.MAGENTA),
-  GRAY(Color.fromRGB(170, 170, 170), ChatColor.GRAY, DyeColor.SILVER),
+  // TODO Test if LIGHT_GRAY works in < 1.13 OR SILVER works in >= 1.13
+  GRAY(Color.fromRGB(170, 170, 170), ChatColor.GRAY, DyeColor.LIGHT_GRAY),
   DARK_GRAY(Color.fromRGB(85, 85, 85), ChatColor.DARK_GRAY, DyeColor.GRAY),
   LIGHT_PURPLE(Color.fromRGB(255, 85, 255), ChatColor.LIGHT_PURPLE, DyeColor.PINK),
   WHITE(Color.WHITE, ChatColor.WHITE, DyeColor.WHITE);

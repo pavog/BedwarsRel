@@ -6,6 +6,9 @@ import io.github.bedwarsrel.game.GameState;
 import io.github.bedwarsrel.game.Team;
 import io.github.bedwarsrel.utils.ChatWriter;
 import java.util.List;
+
+import io.github.bedwarsrel.utils.Utils;
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -331,20 +334,14 @@ public class BlockListener extends BaseListener {
 
       if (replacedBlock != null && !BedwarsRel
           .getInstance().getBooleanConfig("place-in-liquid", true)
-          && (replacedBlock.getType().equals(Material.WATER)
-          || replacedBlock.getType().equals(Material.STATIONARY_WATER)
-          || replacedBlock.getType().equals(Material.LAVA)
-          || replacedBlock.getType().equals(Material.STATIONARY_LAVA))) {
+          && ((XMaterial.fromMaterial(replacedBlock.getType()) != null) && XMaterial.isLiquid(XMaterial.fromMaterial(replacedBlock.getType())))) {
         bpe.setCancelled(true);
         bpe.setBuild(false);
         return;
       }
 
-      if (replacedBlock != null && placeBlock.getType().equals(Material.WEB)
-          && (replacedBlock.getType().equals(Material.WATER)
-          || replacedBlock.getType().equals(Material.STATIONARY_WATER)
-          || replacedBlock.getType().equals(Material.LAVA)
-          || replacedBlock.getType().equals(Material.STATIONARY_LAVA))) {
+      if (replacedBlock != null && placeBlock.getType().equals(XMaterial.COBWEB.parseMaterial())
+              && ((XMaterial.fromMaterial(replacedBlock.getType()) != null) && XMaterial.isLiquid(XMaterial.fromMaterial(replacedBlock.getType())))) {
         bpe.setCancelled(true);
         bpe.setBuild(false);
         return;

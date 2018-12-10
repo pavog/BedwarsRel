@@ -113,7 +113,7 @@ public class SetBedCommand extends BaseCommand implements ICommand {
       theBlock = standingBlock;
     }
 
-    if (targetMaterial.equals(Material.BED_BLOCK)) {
+    if (Utils.isBedMaterial(targetMaterial)) {
       Block neighbor = null;
       Bed theBed = (Bed) theBlock.getState().getData();
 

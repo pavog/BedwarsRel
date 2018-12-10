@@ -48,7 +48,7 @@ public class Team implements ConfigurationSerializable {
       this.setTargetHeadBlock(Utils.locationDeserialize(deserialize.get("bedhead")));
 
       if (this.getTargetHeadBlock() != null && deserialize.containsKey("bedfeed")
-          && this.getTargetHeadBlock().getBlock().getType().equals(Material.BED_BLOCK)) {
+          && Utils.isBedMaterial(this.getTargetHeadBlock().getBlock().getType())) {
         this.setTargetFeetBlock(Utils.locationDeserialize(deserialize.get("bedfeed")));
       }
     }

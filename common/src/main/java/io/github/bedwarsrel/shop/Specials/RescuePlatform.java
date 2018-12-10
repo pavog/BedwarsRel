@@ -8,6 +8,8 @@ import io.github.bedwarsrel.utils.ChatWriter;
 import io.github.bedwarsrel.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,7 +52,7 @@ public class RescuePlatform extends SpecialItem {
     boolean canBreak =
         BedwarsRel.getInstance().getBooleanConfig("specials.rescue-platform.can-break", false);
     Material configMaterial =
-        Utils.getMaterialByConfig("specials.rescue-platform.block", Material.STAINED_GLASS);
+        Utils.getMaterialByConfig("specials.rescue-platform.block", XMaterial.WHITE_STAINED_GLASS.parseMaterial());
 
     if (waitTime > 0) {
       ArrayList<RescuePlatform> livingPlatforms = this.getLivingPlatforms();
@@ -109,9 +111,12 @@ public class RescuePlatform extends SpecialItem {
       }
 
       placed.setType(configMaterial);
-      if (configMaterial.equals(Material.STAINED_GLASS) || configMaterial.equals(Material.WOOL)
-          || configMaterial.equals(Material.STAINED_CLAY)) {
-        placed.setData(team.getColor().getDyeColor().getWoolData());
+      //if (configMaterial.equals(Material.STAINED_GLASS) || configMaterial.equals(Material.WOOL)
+      //    || configMaterial.equals(Material.STAINED_CLAY)) {
+      XMaterial xMaterial = XMaterial.fromMaterial(configMaterial);
+      if (xMaterial != null && XMaterial.isColorable(xMaterial)) {
+        // TODO Set Blockdata to match the color!
+        // placed.setData(team.getColor().getDyeColor().getWoolData());
       }
 
       if (!canBreak) {

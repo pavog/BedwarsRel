@@ -3,23 +3,6 @@ package io.github.bedwarsrel.utils;
 import io.github.bedwarsrel.BedwarsRel;
 import io.github.bedwarsrel.game.Game;
 import io.github.bedwarsrel.game.Team;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,6 +17,17 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public final class Utils {
 
@@ -51,12 +45,12 @@ public final class Utils {
   public static void createParticleInGame(Game game, String particle, Location loc) {
     try {
       Class<?> clazz = Class.forName("io.github.bedwarsrel.com."
-          + BedwarsRel.getInstance().getCurrentVersion().toLowerCase() + ".ParticleSpawner");
+              + BedwarsRel.getInstance().getCurrentVersion().toLowerCase() + ".ParticleSpawner");
 
       Method particleMethod = clazz.getDeclaredMethod("spawnParticle", List.class, String.class,
-          float.class, float.class, float.class);
+              float.class, float.class, float.class);
       particleMethod.invoke(null, game.getPlayers(), particle, (float) loc.getX(),
-          (float) loc.getY(), (float) loc.getZ());
+              (float) loc.getY(), (float) loc.getZ());
     } catch (Exception ex) {
       BedwarsRel.getInstance().getBugsnag().notify(ex);
     }
@@ -104,11 +98,11 @@ public final class Utils {
   }
 
   public static Block getBedNeighbor(Block head) {
-    if (Utils.isBedBlock(head.getRelative(BlockFace.EAST))) {
+    if (Utils.isBedMaterial(head.getRelative(BlockFace.EAST).getType())) {
       return head.getRelative(BlockFace.EAST);
-    } else if (Utils.isBedBlock(head.getRelative(BlockFace.WEST))) {
+    } else if (Utils.isBedMaterial(head.getRelative(BlockFace.WEST).getType())) {
       return head.getRelative(BlockFace.WEST);
-    } else if (Utils.isBedBlock(head.getRelative(BlockFace.SOUTH))) {
+    } else if (Utils.isBedMaterial(head.getRelative(BlockFace.SOUTH).getType())) {
       return head.getRelative(BlockFace.SOUTH);
     } else {
       return head.getRelative(BlockFace.NORTH);
@@ -147,7 +141,7 @@ public final class Utils {
     try {
       ItemStack tempStack = new ItemStack(mat, 1);
       Method method =
-          tempStack.getItemMeta().getClass().getMethod("setColor", new Class[]{Color.class});
+              tempStack.getItemMeta().getClass().getMethod("setColor", new Class[]{Color.class});
       if (method != null) {
         return method;
       }
@@ -161,7 +155,7 @@ public final class Utils {
   public static Object getCraftPlayer(Player player) {
     try {
       Class<?> craftPlayerClass = BedwarsRel.getInstance()
-          .getCraftBukkitClass("entity.CraftPlayer");
+              .getCraftBukkitClass("entity.CraftPlayer");
       Method getHandle = craftPlayerClass.getMethod("getHandle", new Class[]{});
       getHandle.setAccessible(true);
 
@@ -197,7 +191,7 @@ public final class Utils {
   }
 
   public static Class<?> getGenericTypeOfParameter(Class<?> clazz, String method,
-      int parameterIndex) {
+                                                   int parameterIndex) {
     try {
       Method m = clazz.getMethod(method, new Class<?>[]{Set.class, int.class});
       ParameterizedType type = (ParameterizedType) m.getGenericParameterTypes()[parameterIndex];
@@ -221,11 +215,7 @@ public final class Utils {
   public static Material getMaterialByConfig(String key, Material defaultMaterial) {
     try {
       String cfg = BedwarsRel.getInstance().getStringConfig(key, defaultMaterial.name());
-      if (Utils.isNumber(cfg)) {
-        return Material.getMaterial(Integer.valueOf(cfg));
-      } else {
-        return Material.getMaterial(cfg.toUpperCase());
-      }
+      return parseMaterial(cfg);
     } catch (Exception ex) {
       BedwarsRel.getInstance().getBugsnag().notify(ex);
       // just return default
@@ -262,7 +252,7 @@ public final class Utils {
 
   @SuppressWarnings("resource")
   public static String[] getResourceListing(Class<?> clazz, String path)
-      throws URISyntaxException, IOException {
+          throws URISyntaxException, IOException {
     URL dirURL = clazz.getClassLoader().getResource(path);
     if (dirURL != null && dirURL.getProtocol().equals("file")) {
       /* A file path: easy enough */
@@ -327,20 +317,17 @@ public final class Utils {
     return builder.toString();
   }
 
-  public static boolean isBedBlock(Block isBed) {
-    if (isBed == null) {
+  public static boolean isBedMaterial(Material material) {
+    if (material == null) {
       return false;
     }
 
-    return (isBed.getType() == Material.BED || isBed.getType() == Material.BED_BLOCK);
+    XMaterial blockMaterial = XMaterial.fromMaterial(material);
+    return blockMaterial != null && blockMaterial.materialName.equalsIgnoreCase("BED");
   }
 
   public static boolean isColorable(ItemStack itemstack) {
-    return (itemstack.getType().equals(Material.STAINED_CLAY)
-        || itemstack.getType().equals(Material.WOOL)
-        || itemstack.getType().equals(Material.CARPET)
-        || itemstack.getType().equals(Material.STAINED_GLASS)
-        || itemstack.getType().equals(Material.STAINED_GLASS_PANE));
+    return XMaterial.isColorable(XMaterial.fromItemStack(itemstack));
   }
 
   public static boolean isNumber(String numberString) {
@@ -452,9 +439,11 @@ public final class Utils {
   public static Material parseMaterial(String material) {
     try {
       if (Utils.isNumber(material)) {
-        return Material.getMaterial(Integer.parseInt(material));
+        XMaterial xMaterial = XMaterial.fromId(Integer.parseInt(material));
+        return xMaterial != null ? xMaterial.parseMaterial() : null;
       } else {
-        return Material.getMaterial(material.toUpperCase());
+        XMaterial xMaterial = XMaterial.fromString(material.toUpperCase());
+        return xMaterial.parseMaterial();
       }
     } catch (Exception ex) {
       BedwarsRel.getInstance().getBugsnag().notify(ex);
@@ -647,7 +636,7 @@ public final class Utils {
             }
 
             if (!((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f')
-                || (ch >= 'A' && ch <= 'F'))) {
+                    || (ch >= 'A' && ch <= 'F'))) {
               die(String.format("illegal hex digit #%d '%c' in \\x", ch, ch));
             }
 

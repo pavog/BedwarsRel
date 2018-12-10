@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -136,7 +138,8 @@ public class PlayerStorage {
     // choose team only when autobalance is disabled
     if (!game.isAutobalanceEnabled()) {
       // Choose team (Wool)
-      ItemStack teamSelection = new ItemStack(Material.BED, 1);
+      ItemStack teamSelection = XMaterial.WHITE_BED.parseItem();
+      teamSelection.setAmount(1);
       im = teamSelection.getItemMeta();
       im.setDisplayName(BedwarsRel._l(this.player, "lobby.chooseteam"));
       teamSelection.setItemMeta(im);

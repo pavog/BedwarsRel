@@ -5,6 +5,8 @@ import io.github.bedwarsrel.utils.Utils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import io.github.bedwarsrel.utils.XMaterial;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -149,8 +151,9 @@ public class ItemStackParser {
 
       for (String key : enchantSection.getKeys(false)) {
         if (Utils.isNumber(key)) {
-          en = Enchantment.getById(Integer.parseInt(key));
-          level = Integer.parseInt(enchantSection.get(key).toString());
+          // TODO Throw error
+          // en = Enchantment.getById(Integer.parseInt(key));
+          // level = Integer.parseInt(enchantSection.get(key).toString());
         } else {
           en = Enchantment.getByName(key.toUpperCase());
           level = Integer.parseInt(enchantSection.get(key).toString());
@@ -184,9 +187,12 @@ public class ItemStackParser {
     String materialString = this.linkedSection.get("item").toString();
 
     if (Utils.isNumber(materialString)) {
-      material = Material.getMaterial(Integer.parseInt(materialString));
+      // TODO What happens if we cannot parse the material?
+      XMaterial xMaterial = XMaterial.fromId(Integer.parseInt(materialString));
+      material = xMaterial != null ? xMaterial.parseMaterial() : Material.COBBLESTONE;
     } else {
-      material = Material.getMaterial(materialString);
+      XMaterial xMaterial = XMaterial.fromString(materialString);
+      material = xMaterial != null ? xMaterial.parseMaterial() : Material.COBBLESTONE;
     }
 
     return material;

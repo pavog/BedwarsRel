@@ -2,6 +2,7 @@ package io.github.bedwarsrel.shop.Specials;
 
 import io.github.bedwarsrel.BedwarsRel;
 import io.github.bedwarsrel.utils.Utils;
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.Material;
 
 public class MagnetShoe extends SpecialItem {
@@ -15,12 +16,14 @@ public class MagnetShoe extends SpecialItem {
   @Override
   public Material getItemMaterial() {
     String item = BedwarsRel.getInstance()
-        .getStringConfig("specials.magnetshoe.boots", "IRON_BOOTS");
+            .getStringConfig("specials.magnetshoe.boots", "IRON_BOOTS");
     Material material = null;
     if (Utils.isNumber(item)) {
-      material = Material.getMaterial(Integer.valueOf(item));
+      XMaterial xMaterial = XMaterial.fromId(Integer.valueOf(item));
+      material = xMaterial != null ? xMaterial.parseMaterial() : XMaterial.IRON_BOOTS.parseMaterial();
     } else {
-      material = Material.getMaterial(item);
+      XMaterial xMaterial = XMaterial.fromString(item);
+      material = xMaterial != null ? xMaterial.parseMaterial() : XMaterial.IRON_BOOTS.parseMaterial();
     }
 
     if (material == null) {

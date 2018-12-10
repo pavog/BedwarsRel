@@ -6,6 +6,8 @@ import io.github.bedwarsrel.game.Game;
 import io.github.bedwarsrel.utils.ChatWriter;
 import io.github.bedwarsrel.utils.Utils;
 import java.util.ArrayList;
+
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -95,7 +97,7 @@ public class ArrowBlocker extends SpecialItem {
 
   @Override
   public Material getItemMaterial() {
-    return Utils.getMaterialByConfig("specials.arrow-blocker.item", Material.EYE_OF_ENDER);
+    return Utils.getMaterialByConfig("specials.arrow-blocker.item", XMaterial.ENDER_EYE.parseMaterial());
   }
 
   private ArrayList<ArrowBlocker> getLivingBlocker() {

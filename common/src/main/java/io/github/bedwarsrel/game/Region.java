@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import io.github.bedwarsrel.utils.Utils;
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -26,10 +30,10 @@ import org.bukkit.material.Redstone;
 public class Region {
 
   public final static int CHUNK_SIZE = 16;
-  private HashMap<Block, Byte> breakedBlockData = null;
+  private HashMap<Block, BlockData> breakedBlockData = null;
   private HashMap<Block, BlockFace> breakedBlockFace = null;
   private HashMap<Block, Boolean> breakedBlockPower = null;
-  private HashMap<Block, Integer> breakedBlockTypes = null;
+  private HashMap<Block, Material> breakedBlockTypes = null;
   private List<Block> breakedBlocks = null;
   private List<Inventory> inventories = null;
   private Location maxCorner = null;
@@ -53,8 +57,8 @@ public class Region {
     this.setMinMax(pos1, pos2);
     this.placedBlocks = new ArrayList<Block>();
     this.breakedBlocks = new ArrayList<Block>();
-    this.breakedBlockTypes = new HashMap<Block, Integer>();
-    this.breakedBlockData = new HashMap<Block, Byte>();
+    this.breakedBlockTypes = new HashMap<Block, Material>();
+    this.breakedBlockData = new HashMap<Block, BlockData>();
     this.breakedBlockFace = new HashMap<Block, BlockFace>();
     this.placedUnbreakableBlocks = new ArrayList<Block>();
     this.breakedBlockPower = new HashMap<Block, Boolean>();
@@ -75,8 +79,8 @@ public class Region {
           ((Directional) bedBlock.getState().getData()).getFacing());
     }
 
-    this.breakedBlockTypes.put(bedBlock, bedBlock.getTypeId());
-    this.breakedBlockData.put(bedBlock, bedBlock.getData());
+    this.breakedBlockTypes.put(bedBlock, bedBlock.getType());
+    this.breakedBlockData.put(bedBlock, bedBlock.getBlockData());
 
     if (bedBlock.getState().getData() instanceof Redstone) {
       this.breakedBlockPower.put(bedBlock, ((Redstone) bedBlock.getState().getData()).isPowered());
@@ -98,8 +102,8 @@ public class Region {
             ((Directional) replacedBlock.getData()).getFacing());
       }
 
-      this.breakedBlockTypes.put(replacedBlock.getBlock(), replacedBlock.getTypeId());
-      this.breakedBlockData.put(replacedBlock.getBlock(), replacedBlock.getData().getData());
+      this.breakedBlockTypes.put(replacedBlock.getBlock(), replacedBlock.getType());
+      this.breakedBlockData.put(replacedBlock.getBlock(), replacedBlock.getBlockData());
 
       this.breakedBlocks.add(replacedBlock.getBlock());
     }
@@ -114,8 +118,8 @@ public class Region {
             ((Directional) replaced.getData()).getFacing());
       }
 
-      this.breakedBlockTypes.put(replaced.getBlock(), replaced.getTypeId());
-      this.breakedBlockData.put(replaced.getBlock(), replaced.getData().getData());
+      this.breakedBlockTypes.put(replaced.getBlock(), replaced.getType());
+      this.breakedBlockData.put(replaced.getBlock(), replaced.getBlockData());
       this.breakedBlocks.add(replaced.getBlock());
 
       if (replaced.getData() instanceof Redstone) {
@@ -253,8 +257,9 @@ public class Region {
 
     for (Block block : this.breakedBlocks) {
       Block theBlock = this.getWorld().getBlockAt(block.getLocation());
-      theBlock.setTypeId(this.breakedBlockTypes.get(block));
-      theBlock.setData(this.breakedBlockData.get(block));
+      theBlock.setType(this.breakedBlockTypes.get(block));
+      theBlock.setBlockData(this.breakedBlockData.get(block));
+
 
       if (this.breakedBlockFace.containsKey(theBlock)) {
         MaterialData data = theBlock.getState().getData();
@@ -287,15 +292,15 @@ public class Region {
         continue;
       }
 
-      if ((targetMaterial.equals(Material.BED_BLOCK) || targetMaterial.equals(Material.BED))
+      if (Utils.isBedMaterial(targetMaterial)
           && team.getFeetTarget() != null) {
         Block blockHead = this.world.getBlockAt(team.getHeadTarget().getLocation());
         Block blockFeed = this.world.getBlockAt(team.getFeetTarget().getLocation());
         BlockState headState = blockHead.getState();
         BlockState feedState = blockFeed.getState();
 
-        headState.setType(Material.BED_BLOCK);
-        feedState.setType(Material.BED_BLOCK);
+        headState.setType(XMaterial.WHITE_BED.parseMaterial());
+        feedState.setType(XMaterial.WHITE_BED.parseMaterial());
         headState.setRawData((byte) 0x0);
         feedState.setRawData((byte) 0x8);
         feedState.update(true, false);

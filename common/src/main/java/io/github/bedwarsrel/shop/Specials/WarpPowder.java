@@ -6,6 +6,7 @@ import io.github.bedwarsrel.game.Game;
 import io.github.bedwarsrel.game.Team;
 import io.github.bedwarsrel.utils.ChatWriter;
 import io.github.bedwarsrel.utils.Utils;
+import io.github.bedwarsrel.utils.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -81,7 +82,7 @@ public class WarpPowder extends SpecialItem {
 
   @Override
   public Material getItemMaterial() {
-    return Material.SULPHUR;
+    return XMaterial.GUNPOWDER.parseMaterial();
   }
 
   public Player getPlayer() {

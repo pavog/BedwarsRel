@@ -14,6 +14,7 @@ import io.github.bedwarsrel.shop.Specials.SpecialItem;
 import io.github.bedwarsrel.statistics.PlayerStatistic;
 import io.github.bedwarsrel.utils.ChatWriter;
 import io.github.bedwarsrel.utils.Utils;
+import io.github.bedwarsrel.utils.XMaterial;
 import io.github.bedwarsrel.villager.MerchantCategory;
 import io.github.bedwarsrel.villager.MerchantCategoryComparator;
 import java.io.File;
@@ -292,9 +293,9 @@ public class Game {
 
       Material targetMaterial = this.getTargetMaterial();
 
-      if (targetMaterial.equals(Material.BED_BLOCK)) {
+      if (Utils.isBedMaterial(targetMaterial)) {
         if ((t.getHeadTarget() == null || t.getFeetTarget() == null)
-            || (!Utils.isBedBlock(t.getHeadTarget()) || !Utils.isBedBlock(t.getFeetTarget()))) {
+            || (!Utils.isBedMaterial(t.getHeadTarget().getType()) || !Utils.isBedMaterial(t.getFeetTarget().getType()))) {
           return GameCheckCode.TEAM_NO_WRONG_BED;
         }
       } else {
@@ -458,7 +459,7 @@ public class Game {
   }
 
   private void dropTargetBlock(Block targetBlock) {
-    if (targetBlock.getType().equals(Material.BED_BLOCK)) {
+    if(Utils.isBedMaterial(targetBlock.getType())) {
       Block bedHead;
       Block bedFeet;
       Bed bedBlock = (Bed) targetBlock.getState().getData();
@@ -710,7 +711,7 @@ public class Game {
 
   public Material getTargetMaterial() {
     if (this.targetMaterial == null) {
-      return Utils.getMaterialByConfig("game-block", Material.BED_BLOCK);
+      return Utils.getMaterialByConfig("game-block", XMaterial.WHITE_BED.parseMaterial());
     }
 
     return this.targetMaterial;
@@ -779,7 +780,7 @@ public class Game {
     Team bedDestroyTeam = null;
     Block bedBlock = team.getHeadTarget();
 
-    if (block.getType().equals(Material.BED_BLOCK)) {
+    if (Utils.isBedMaterial(block.getType())) {
       Block breakBlock = block;
       Block neighbor = null;
       Bed breakBed = (Bed) breakBlock.getState().getData();
@@ -1022,7 +1023,8 @@ public class Game {
         .createInventory(null, size, BedwarsRel._l(player, "ingame.spectator"));
     for (Team t : this.getTeams().values()) {
       for (Player p : t.getPlayers()) {
-        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        // TODO Test skulls
+        ItemStack head = new ItemStack(XMaterial.SKELETON_SKULL.parseMaterial(), 1, (short) 3);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
         meta.setDisplayName(t.getChatColor() + p.getDisplayName());
         meta.setLore(Arrays.asList(t.getChatColor() + t.getDisplayName()));
