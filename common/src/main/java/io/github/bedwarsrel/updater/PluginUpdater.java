@@ -521,18 +521,21 @@ public class PluginUpdater {
     } catch (final IOException e) {
       if (e.getMessage().contains("HTTP response code: 403")) {
         this.plugin.getLogger()
-            .severe("dev.bukkit.org rejected the API key provided in plugins/updater/config.yml");
+                .severe("dev.bukkit.org rejected the API key provided in plugins/updater/config.yml");
         this.plugin.getLogger()
-            .severe("Please double-check your configuration to ensure it is correct.");
+                .severe("Please double-check your configuration to ensure it is correct.");
         this.result = UpdateResult.FAIL_APIKEY;
-      } else {
+      } else if (e.getMessage().contains("Connection refused: connect") || e.getMessage().contains("connect timed out")) {
         this.plugin.getLogger()
             .severe("The updater could not contact dev.bukkit.org for updating.");
         this.plugin.getLogger().severe(
             "If you have not recently modified your configuration and this is the first time you are seeing this message, the site may be experiencing temporary downtime.");
         this.result = UpdateResult.FAIL_DBO;
+      } else {
+        this.result = UpdateResult.FAIL_UNKNOWN;
+        this.plugin.getLogger().severe("Unknown error occured while trying to connect to dev.bukkit.org.");
+        this.plugin.getLogger().log(Level.SEVERE, "Error: " + e.getLocalizedMessage(), e);
       }
-      this.plugin.getLogger().log(Level.SEVERE, null, e);
       return false;
     }
   }
@@ -793,6 +796,10 @@ public class PluginUpdater {
      * The server administrator has improperly configured their API key in the configuration.
      */
     FAIL_APIKEY,
+    /**
+     * Unknown error.
+     */
+    FAIL_UNKNOWN,
     /**
      * The updater found an update, but because of the UpdateType being set to NO_DOWNLOAD, it
      * wasn't downloaded.
