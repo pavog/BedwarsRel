@@ -844,8 +844,8 @@ public class PlayerListener extends BaseListener {
 
     if (g.getState() == GameState.RUNNING) {
       if (pie.getAction() == Action.PHYSICAL && clickedBlock != null
-              && (clickedBlock.getType().equals(XMaterial.WHEAT.parseMaterial()))
-              || clickedBlock.getType().equals(XMaterial.FARMLAND.parseMaterial())) {
+              && (clickedBlock.getType().equals(XMaterial.WHEAT.parseMaterial())
+              || clickedBlock.getType().equals(XMaterial.FARMLAND.parseMaterial()))) {
         pie.setCancelled(true);
         return;
       }
