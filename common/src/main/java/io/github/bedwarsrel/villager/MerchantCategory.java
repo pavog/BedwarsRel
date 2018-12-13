@@ -63,10 +63,11 @@ public class MerchantCategory {
       String permission = "bw.base";
       int order = 0;
 
-      if (!Utils.isNumber(item)) {
-        catItem = XMaterial.fromString(section.getString(cat + ".item")).parseMaterial();
+      if (Utils.isNumber(item)) {
+        BedwarsRel.getInstance().getServer().getConsoleSender().sendMessage(
+                ChatWriter.pluginMessage(ChatColor.RED + "Could not parse Material for Id " + item + ". Using Ids is forbidden!"));
       } else {
-        catItem = XMaterial.fromId(section.getInt(cat + ".item")).parseMaterial();
+        catItem = XMaterial.fromString(section.getString(cat + ".item")).parseMaterial();
       }
 
       if (section.contains(cat + ".lore")) {

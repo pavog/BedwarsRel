@@ -3,10 +3,7 @@ package io.github.bedwarsrel.utils;
 import io.github.bedwarsrel.BedwarsRel;
 import io.github.bedwarsrel.game.Game;
 import io.github.bedwarsrel.game.Team;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -435,12 +432,12 @@ public final class Utils {
     return section;
   }
 
-  @SuppressWarnings("deprecation")
   public static Material parseMaterial(String material) {
     try {
       if (Utils.isNumber(material)) {
-        XMaterial xMaterial = XMaterial.fromId(Integer.parseInt(material));
-        return xMaterial != null ? xMaterial.parseMaterial() : null;
+        BedwarsRel.getInstance().getServer().getConsoleSender().sendMessage(
+                ChatWriter.pluginMessage(ChatColor.RED + "Could not parse Material for Id " + material + ". Using Ids is forbidden!"));
+        return null;
       } else {
         XMaterial xMaterial = XMaterial.fromString(material.toUpperCase());
         return xMaterial.parseMaterial();

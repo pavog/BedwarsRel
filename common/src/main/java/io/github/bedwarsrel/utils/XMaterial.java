@@ -22,15 +22,16 @@ package io.github.bedwarsrel.utils;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
+ * <p>
  * Taken from
  * https://www.spigotmc.org/threads/1-8-to-1-13-itemstack-material-version-support.329630/
  **/
 
+import io.github.bedwarsrel.BedwarsRel;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public enum XMaterial {
@@ -889,21 +890,6 @@ public enum XMaterial {
   String materialName;
   int data;
 
-  private static XMaterial[] byId;
-
-  static {
-    byId = new XMaterial[0];
-    for (XMaterial material : values()) {
-      int id = material.parseMaterial().getId();
-      if (byId.length > id) {
-        byId[id] = material;
-      } else {
-        byId = Arrays.copyOfRange(byId, 0, id + 2);
-        byId[id] = material;
-      }
-    }
-  }
-
   XMaterial(String materialName, int data) {
     this.materialName = materialName;
     this.data = data;
@@ -1025,13 +1011,6 @@ public enum XMaterial {
 
   }
 
-  @Deprecated
-  public static XMaterial fromId(int id) {
-    // I believe the first statement should be (id < byId.length) but this is the original logic
-    return (id < byId.length && id >= 0) ? byId[id] : null;
-  }
-
-
   public static boolean isColorable(XMaterial type) {
     String[] split = type.name().split("_");
     int length = split.length;
@@ -1097,11 +1076,16 @@ public enum XMaterial {
   }
 
   public Material parseMaterial() {
-    Material mat = Material.matchMaterial(this.toString());
+    Material mat = Material.matchMaterial(this.name());
     if (mat != null) {
       return mat;
     }
-    return Material.matchMaterial(materialName);
+    mat = Material.matchMaterial(this.getMaterialName());
+    if (mat == null) {
+      BedwarsRel.getInstance().getServer().getConsoleSender().sendMessage(
+              ChatWriter.pluginMessage(ChatColor.RED + "Could not parse Material. '" + this.getMaterialName() + "' does not seem to exist!"));
+    }
+    return mat;
   }
 
 }

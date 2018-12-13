@@ -1,6 +1,7 @@
 package io.github.bedwarsrel.villager;
 
 import io.github.bedwarsrel.BedwarsRel;
+import io.github.bedwarsrel.utils.ChatWriter;
 import io.github.bedwarsrel.utils.Utils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -187,9 +188,9 @@ public class ItemStackParser {
     String materialString = this.linkedSection.get("item").toString();
 
     if (Utils.isNumber(materialString)) {
-      // TODO What happens if we cannot parse the material?
-      XMaterial xMaterial = XMaterial.fromId(Integer.parseInt(materialString));
-      material = xMaterial != null ? xMaterial.parseMaterial() : Material.COBBLESTONE;
+      BedwarsRel.getInstance().getServer().getConsoleSender().sendMessage(
+              ChatWriter.pluginMessage(ChatColor.RED + "Could not parse Material for Id " + materialString + ". Using Ids is forbidden!"));
+      material = Material.COBBLESTONE;
     } else {
       XMaterial xMaterial = XMaterial.fromString(materialString);
       material = xMaterial != null ? xMaterial.parseMaterial() : Material.COBBLESTONE;
