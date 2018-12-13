@@ -9,6 +9,7 @@ import io.github.bedwarsrel.game.GameState;
 import io.github.bedwarsrel.game.Team;
 import io.github.bedwarsrel.shop.NewItemShop;
 import io.github.bedwarsrel.utils.ChatWriter;
+import io.github.bedwarsrel.utils.Utils;
 import io.github.bedwarsrel.utils.XMaterial;
 import io.github.bedwarsrel.villager.MerchantCategory;
 import java.lang.reflect.Method;
@@ -945,54 +946,42 @@ public class PlayerListener extends BaseListener {
         return;
       }
 
-      // TODO Move away from legacy materials and use XMaterial for this
-      switch (interactingMaterial) {
-        case LEGACY_BED_BLOCK:
-          pie.setCancelled(true);
-          if (!g.isAutobalanceEnabled()) {
-            g.getPlayerStorage(player).openTeamSelection(g);
-          }
-
-          break;
-        case DIAMOND:
-          pie.setCancelled(true);
-          if (player.isOp() || player.hasPermission("bw.setup")) {
+      if (Utils.isBedMaterial(interactingMaterial)) {
+        pie.setCancelled(true);
+        if (!g.isAutobalanceEnabled()) {
+          g.getPlayerStorage(player).openTeamSelection(g);
+        }
+      } else if (interactingMaterial.equals(Material.DIAMOND)) {
+        pie.setCancelled(true);
+        if (player.isOp() || player.hasPermission("bw.setup")) {
+          g.start(player);
+        } else if (player.hasPermission("bw.vip.forcestart")) {
+          if (g.isStartable()) {
             g.start(player);
-          } else if (player.hasPermission("bw.vip.forcestart")) {
-            if (g.isStartable()) {
-              g.start(player);
-            } else {
-              if (!g.hasEnoughPlayers()) {
-                player.sendMessage(ChatWriter.pluginMessage(
-                    ChatColor.RED + BedwarsRel._l(player, "lobby.cancelstart.not_enough_players")));
-              } else if (!g.hasEnoughTeams()) {
-                player.sendMessage(ChatWriter
-                    .pluginMessage(
-                        ChatColor.RED + BedwarsRel
-                            ._l(player, "lobby.cancelstart.not_enough_teams")));
-              }
+          } else {
+            if (!g.hasEnoughPlayers()) {
+              player.sendMessage(ChatWriter.pluginMessage(
+                      ChatColor.RED + BedwarsRel._l(player, "lobby.cancelstart.not_enough_players")));
+            } else if (!g.hasEnoughTeams()) {
+              player.sendMessage(ChatWriter.pluginMessage(
+                              ChatColor.RED + BedwarsRel._l(player, "lobby.cancelstart.not_enough_teams")));
             }
           }
-          break;
-        case EMERALD:
-          pie.setCancelled(true);
-          if ((player.isOp() || player.hasPermission("bw.setup")
-              || player.hasPermission("bw.vip.reducecountdown"))
-              && g.getGameLobbyCountdown().getCounter() > g.getGameLobbyCountdown()
-              .getLobbytimeWhenFull()) {
-            g.getGameLobbyCountdown().setCounter(g.getGameLobbyCountdown().getLobbytimeWhenFull());
-          }
-          break;
-        case SLIME_BALL:
-          pie.setCancelled(true);
-          g.playerLeave(player, false);
-          break;
-        case LEATHER_CHESTPLATE:
-          pie.setCancelled(true);
-          player.updateInventory();
-          break;
-        default:
-          break;
+        }
+      } else if (interactingMaterial.equals(Material.EMERALD)) {
+        pie.setCancelled(true);
+        if ((player.isOp() || player.hasPermission("bw.setup")
+                || player.hasPermission("bw.vip.reducecountdown"))
+                && g.getGameLobbyCountdown().getCounter() > g.getGameLobbyCountdown()
+                .getLobbytimeWhenFull()) {
+          g.getGameLobbyCountdown().setCounter(g.getGameLobbyCountdown().getLobbytimeWhenFull());
+        }
+      } else if (interactingMaterial.equals(Material.SLIME_BALL)) {
+        pie.setCancelled(true);
+        g.playerLeave(player, false);
+      } else if (interactingMaterial.equals(Material.LEATHER_CHESTPLATE)) {
+        pie.setCancelled(true);
+        player.updateInventory();
       }
     }
   }
