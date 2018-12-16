@@ -946,7 +946,8 @@ public class PlayerListener extends BaseListener {
         return;
       }
 
-      if (Utils.isBedMaterial(interactingMaterial)) {
+      // TODO We should not check for name containing BED
+      if (Utils.isBedMaterial(interactingMaterial) || interactingMaterial.name().contains("BED")) {
         pie.setCancelled(true);
         if (!g.isAutobalanceEnabled()) {
           g.getPlayerStorage(player).openTeamSelection(g);
