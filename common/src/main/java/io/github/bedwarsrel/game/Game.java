@@ -856,11 +856,17 @@ public class Game {
       }
     }
 
-    this.broadcastSound(
-        Sound.valueOf(
-            BedwarsRel.getInstance().getStringConfig("bed-sound", "ENDERDRAGON_GROWL")
-                .toUpperCase()),
-        30.0F, 10.0F);
+    try {
+      Sound broadcastSound = Sound.valueOf(
+              BedwarsRel.getInstance().getStringConfig("bed-sound", "ENTITY_ENDER_DRAGON_GROWL")
+                      .toUpperCase());
+      this.broadcastSound(broadcastSound, 30.0F, 10.0F);
+    } catch (IllegalArgumentException e) {
+      BedwarsRel.getInstance().getLogger().warning("Could not find sound '" +
+              BedwarsRel.getInstance().getStringConfig("bed-sound", "ENTITY_ENDER_DRAGON_GROWL") +
+              "' to play on bed-destroy.");
+    }
+
     this.updateScoreboard();
     return true;
   }
